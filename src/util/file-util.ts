@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-
-import { GOALS, type AirLearnGoal } from '../model/goals.js';
+import { GOAL_UID } from '../config.js';
 
 export function writeStringToFile(s: string, filename: string): void {
     console.log('Writing to file: ' + filename);
@@ -21,41 +20,10 @@ export function readJsonFromFile(filename: string): any {
     return data;
 }
 
-// helper
-function getAirLearnGoalByGoalUID(goalUID: string): AirLearnGoal | undefined {
-    return GOALS[goalUID]!;
+export function getWordsJsonFilename(): string {
+    return `output/${GOAL_UID}/words.json`;
 }
 
-export function getV1ContentWordsJsonFilenameByCourseIdGeneric(goalUID: string): string {
-    console.info(`Determining json filename by goalUID=${goalUID}`);
-    let airLearnGoal = getAirLearnGoalByGoalUID(goalUID);
-    if (!airLearnGoal) {
-        throw "Unsupported goalUID: " + goalUID;
-    }
-    console.info(`Found AirLearnGoal, commonFolderName=${airLearnGoal.commonFolderName}`);
-    return `output/${airLearnGoal.commonFolderName}/words.json`;
-}
-
-export function getV1ContentWordsJsonFilenameByCourseIdGranular(
-    goalUID: string, limit: number, offset: number, order: number, isImportant: number
-): string {
-    console.info(`Determining json filename by goalUID=${goalUID}`);
-    let airLearnGoal = getAirLearnGoalByGoalUID(goalUID);
-    if (!airLearnGoal) {
-        throw "Unsupported goalUID: " + goalUID;
-    }
-    console.info(`Found AirLearnGoal, commonFolderName=${airLearnGoal.commonFolderName}`);
-    let startIndex = offset;
-    let endIndex = offset + limit - 1;
-    let orderStr = order == 1 ? "recent" : "a-z";
-    let importantStr = isImportant ? "starred" : "all";
-    return `output/${airLearnGoal.commonFolderName}/get.v1.content.words.${importantStr}.${orderStr}.${startIndex}-${endIndex}.json`;
-}
-
-export function getLexemeFlashcardsTsvFilename(goalUID: string) {
-    let airLearnGoal = getAirLearnGoalByGoalUID(goalUID);
-    if (!airLearnGoal) {
-        throw "Unsupported goalUID: " + goalUID;
-    }
-    return `output/${airLearnGoal.commonFolderName}/flashcards/lexeme-flashcards.tsv`;
+export function getLexemeFlashcardsTsvFilename() {
+    return `output/${GOAL_UID}/flashcards/lexeme-flashcards.tsv`;
 }

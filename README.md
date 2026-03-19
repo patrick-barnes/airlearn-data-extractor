@@ -15,18 +15,16 @@ For examples of generated flashcards, see:
 
 2. Copy `.env.example` to `.env`.
 
-3. In `.env`, set `JWT` to your AirLearn JWT token.
+3. In `.env`, set `JWT` to your JWT.
 
-For more info, see "How to get your AirLearn JWT token" below.
+4. In `.env`, set `GOAL_UID` per the learning language.
 
 
 ## Usage
 
-1. In `src/config.ts`, set the language
+1. `npm run fetch-words` to create `words.json`
 
-2. `npm run fetch-words` to create `words.json`
-
-3. `npm run make-flashcards` to create `lexeme-flashcards.tsv`
+2. `npm run make-flashcards` to create `lexeme-flashcards.tsv`
 
 Check the `output` folder for results.
 
@@ -39,7 +37,7 @@ Check the `output` folder for results.
 
 ## How to get your AirLearn JWT token
 
-One way to get your AirLearn JWT token is:
+If you are using Android, one way is:
 
 - Use Google Android Studio to create a virtual device
 - Use an app like HTTP Tooklit to capture network traffic

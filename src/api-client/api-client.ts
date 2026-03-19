@@ -1,7 +1,7 @@
 import type { GetV1ContentWordsResponse, Word } from "../model/words.js";
 import { writeStringToFile } from "../util/file-util.js";
-import { CURRENT_GOAL } from "../config.js";
-import { getV1ContentWordsJsonFilenameByCourseIdGeneric } from "../util/file-util.js";
+import { GOAL_UID } from "../config.js";
+import { getWordsJsonFilename } from "../util/file-util.js";
 
 const BASE_URL = 'https://api.unacademylanguage.com';
 
@@ -9,7 +9,7 @@ const BASE_URL = 'https://api.unacademylanguage.com';
 const WAIT_MILLIS = 1000;
 const WORDS_BATCH_SIZE = 50;
 
-export class AirLearnAPIClient {
+export class APIClient {
 
 	private jwt: string;
 
@@ -80,7 +80,6 @@ export class AirLearnAPIClient {
 		order: number, // 1 or 2
 		is_important: number, // 0 or 1
 	): Promise<any> {
-		console.info(`getV1ContentWords() called, goal_uid: ${goal_uid}, limit: ${limit}, offset: ${offset}, order: ${order}, is_important: ${is_important}`);
 		let url = `apollo/v1/content/words/?limit=${limit}&offset=${offset}&goal_uid=${goal_uid}&order=${order}&is_important=${is_important}`;
 		let words = await this.doGet(url);
         return words;
@@ -88,7 +87,6 @@ export class AirLearnAPIClient {
 
 	async fetchAndSaveWords(): Promise<Word[]> {
 	  console.info('fetchAndSaveWords() called');
-	  let goalUID = CURRENT_GOAL.goalUID;
 	  let limit = WORDS_BATCH_SIZE;
 	  let offset = 0; // start at the beginning
 	  let order = 1; // 1=recent, 2=a-z
@@ -96,7 +94,7 @@ export class AirLearnAPIClient {
 	  let done = false;
 	  let allWords: Word[] = [];
 	  while (!done) {
-		let wordsResponse: GetV1ContentWordsResponse = await this.getV1ContentWords(goalUID, limit, offset, order, isImportant);
+		let wordsResponse: GetV1ContentWordsResponse = await this.getV1ContentWords(GOAL_UID, limit, offset, order, isImportant);
 		let words: Word[] = wordsResponse.data.words;
 		allWords = allWords.concat(words);
 		if (!(wordsResponse.next)) {
@@ -109,7 +107,7 @@ export class AirLearnAPIClient {
 		}
 	  }
 	  let wordsJson = JSON.stringify(allWords, null, 2);
-	  let wordsJsonFilename = getV1ContentWordsJsonFilenameByCourseIdGeneric(goalUID);
+	  let wordsJsonFilename = getWordsJsonFilename();
 	  writeStringToFile(wordsJson, wordsJsonFilename);
 	  return allWords;
 	}
