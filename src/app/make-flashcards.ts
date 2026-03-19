@@ -1,4 +1,4 @@
-import { AIRLEARN_CURRENT_GOAL } from "../config.js";
+import { CURRENT_GOAL } from "../config.js";
 import type { Script, Word } from "../model/words.js";
 import { getLexemeFlashcardsTsvFilename, getV1ContentWordsJsonFilenameByCourseIdGeneric, readJsonFromFile, writeStringToFile } from "../util/file-util.js";
 
@@ -108,7 +108,7 @@ function saveFlashCardsToTsv(notes: Note[], filename: string) {
     writeStringToFile(tsvContent, filename);
 }
 
-let goalUID = AIRLEARN_CURRENT_GOAL.goalUID;
+let goalUID = CURRENT_GOAL.goalUID;
 let wordsJsonFilename = getV1ContentWordsJsonFilenameByCourseIdGeneric(goalUID);
 let wordsFlashcardsJsonFilename = getLexemeFlashcardsTsvFilename(goalUID);
 let words: Word[] = readJsonFromFile(wordsJsonFilename);

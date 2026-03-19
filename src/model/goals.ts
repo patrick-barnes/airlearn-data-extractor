@@ -7,7 +7,7 @@ export type AirLearnGoalMap = {
     [goalUID: string]: AirLearnGoal
 };
 
-export const AIRLEARN_GOALS: AirLearnGoalMap = {
+export const GOALS: AirLearnGoalMap = {
     ENGCHN: {
         goalUID: "ENGCHN",
         commonFolderName: "chinese-english",

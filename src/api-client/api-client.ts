@@ -1,6 +1,6 @@
 import type { GetV1ContentWordsResponse, Word } from "../model/words.js";
 import { writeStringToFile } from "../util/file-util.js";
-import { AIRLEARN_CURRENT_GOAL } from "../config.js";
+import { CURRENT_GOAL } from "../config.js";
 import { getV1ContentWordsJsonFilenameByCourseIdGeneric } from "../util/file-util.js";
 
 const BASE_URL = 'https://api.unacademylanguage.com';
@@ -14,9 +14,9 @@ export class AirLearnAPIClient {
 	private jwt: string;
 
 	constructor() {
-		this.jwt = process.env.AIRLEARN_JWT || '';
+		this.jwt = process.env.JWT || '';
 		if (!this.jwt) {
-			throw new Error('AIRLEARN_JWT environment variable is not set');
+			throw new Error('JWT environment variable is not set');
 		}
 	}
 
@@ -88,7 +88,7 @@ export class AirLearnAPIClient {
 
 	async fetchAndSaveWords(): Promise<Word[]> {
 	  console.info('fetchAndSaveWords() called');
-	  let goalUID = AIRLEARN_CURRENT_GOAL.goalUID;
+	  let goalUID = CURRENT_GOAL.goalUID;
 	  let limit = WORDS_BATCH_SIZE;
 	  let offset = 0; // start at the beginning
 	  let order = 1; // 1=recent, 2=a-z

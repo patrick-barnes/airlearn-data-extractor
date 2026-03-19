@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build": "dotenv tsc",
-    "airlearn-fetch-words": "dotenv tsc && dotenv node dist/airlearn/app/fetch-words.js",
-    "airlearn-make-flashcards": "dotenv tsc && dotenv node dist/airlearn/app/make-flashcards.js",
+    "fetch-words": "dotenv tsc && dotenv node dist/app/fetch-words.js",
+    "make-flashcards": "dotenv tsc && dotenv node dist/app/make-flashcards.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

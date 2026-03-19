@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { AIRLEARN_GOALS, type AirLearnGoal } from '../model/goals.js';
-
+import { GOALS, type AirLearnGoal } from '../model/goals.js';
 
 export function writeStringToFile(s: string, filename: string): void {
     console.log('Writing to file: ' + filename);
@@ -24,7 +23,7 @@ export function readJsonFromFile(filename: string): any {
 
 // helper
 function getAirLearnGoalByGoalUID(goalUID: string): AirLearnGoal | undefined {
-    return AIRLEARN_GOALS[goalUID]!;
+    return GOALS[goalUID]!;
 }
 
 export function getV1ContentWordsJsonFilenameByCourseIdGeneric(goalUID: string): string {
@@ -34,7 +33,7 @@ export function getV1ContentWordsJsonFilenameByCourseIdGeneric(goalUID: string):
         throw "Unsupported goalUID: " + goalUID;
     }
     console.info(`Found AirLearnGoal, commonFolderName=${airLearnGoal.commonFolderName}`);
-    return `output-airlearn/${airLearnGoal.commonFolderName}/words.json`;
+    return `output/${airLearnGoal.commonFolderName}/words.json`;
 }
 
 export function getV1ContentWordsJsonFilenameByCourseIdGranular(
@@ -50,7 +49,7 @@ export function getV1ContentWordsJsonFilenameByCourseIdGranular(
     let endIndex = offset + limit - 1;
     let orderStr = order == 1 ? "recent" : "a-z";
     let importantStr = isImportant ? "starred" : "all";
-    return `output-airlearn/${airLearnGoal.commonFolderName}/get.v1.content.words.${importantStr}.${orderStr}.${startIndex}-${endIndex}.json`;
+    return `output/${airLearnGoal.commonFolderName}/get.v1.content.words.${importantStr}.${orderStr}.${startIndex}-${endIndex}.json`;
 }
 
 export function getLexemeFlashcardsTsvFilename(goalUID: string) {
@@ -58,5 +57,5 @@ export function getLexemeFlashcardsTsvFilename(goalUID: string) {
     if (!airLearnGoal) {
         throw "Unsupported goalUID: " + goalUID;
     }
-    return `output-airlearn/${airLearnGoal.commonFolderName}/flashcards/lexeme-flashcards.tsv`;
+    return `output/${airLearnGoal.commonFolderName}/flashcards/lexeme-flashcards.tsv`;
 }
