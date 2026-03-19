@@ -1,7 +1,7 @@
-import type { Category, GetV1ContentWordsResponse, Script, Word } from "../model/words.js";
+import type { GetV1ContentWordsResponse, Word } from "../model/words.js";
 import { writeStringToFile } from "../util/file-util.js";
 import { AIRLEARN_CURRENT_GOAL } from "../config.js";
-import { getV1ContentWordsJsonFilenameByCourseIdGranular, getV1ContentWordsJsonFilenameByCourseIdGeneric } from "../util/file-util.js";
+import { getV1ContentWordsJsonFilenameByCourseIdGeneric } from "../util/file-util.js";
 
 const BASE_URL = 'https://api.unacademylanguage.com';
 
@@ -83,13 +83,9 @@ export class AirLearnAPIClient {
 		console.info(`getV1ContentWords() called, goal_uid: ${goal_uid}, limit: ${limit}, offset: ${offset}, order: ${order}, is_important: ${is_important}`);
 		let url = `apollo/v1/content/words/?limit=${limit}&offset=${offset}&goal_uid=${goal_uid}&order=${order}&is_important=${is_important}`;
 		let words = await this.doGet(url);
-		let wordsJson = JSON.stringify(words, null, 2);
-		let wordsJsonFilename = getV1ContentWordsJsonFilenameByCourseIdGranular(goal_uid, limit, offset, order, is_important);
-		writeStringToFile(wordsJson, wordsJsonFilename);
         return words;
     }
 
-	// TODO: Iterate with multiple calls to get all words (offset=0, 50, etc.) and combine into a single file
 	async fetchAndSaveWords(): Promise<Word[]> {
 	  console.info('fetchAndSaveWords() called');
 	  let goalUID = AIRLEARN_CURRENT_GOAL.goalUID;
@@ -100,7 +96,6 @@ export class AirLearnAPIClient {
 	  let done = false;
 	  let allWords: Word[] = [];
 	  while (!done) {
-		// TODO: Iterate...
 		let wordsResponse: GetV1ContentWordsResponse = await this.getV1ContentWords(goalUID, limit, offset, order, isImportant);
 		let words: Word[] = wordsResponse.data.words;
 		allWords = allWords.concat(words);
